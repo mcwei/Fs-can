@@ -22,13 +22,18 @@ AMPLITUDE = 6  # 幅度 (rad)
 DURATION = 600.0  # 运行时间 (s)
 
 def main():
-    # bus = can.interface.Bus(interface="pcan", channel="PCAN_USBBUS1", bitrate=1000000)
-    bus = can.interface.Bus(bustype='canalystii', channel=0, bitrate=1000000)#初始化CAN1通道用来发送
-    
+    # 使用PCAN适配器
+    #windows系统
+    bus = can.interface.Bus(interface="pcan", channel="PCAN_USBBUS1", bitrate=1000000)
+    #linux系统
+    #bus = can.interface.Bus(interface="socketcan", channel="can0", bitrate=1000000)
+    # 或使用CANalyst适配器
+    #bus = can.interface.Bus(bustype='canalystii', channel=0, bitrate=1000000)#初始化CAN1通道用来发送
+
     # 创建电机控制对象
     control = MotorControl(canbus = bus)
     servo = servo_control(bus, is_logging=True)
-    
+
     servo_id = 0x00 # 0x00 is the ID of the first servo
     # 创建并添加电机
     motors = []
@@ -71,7 +76,7 @@ def main():
             for motor in motors:
                 control.control_Pos_Vel(motor, position, 20.0)
                 print(position)
-            
+
             # 每2000毫秒发送舵机控制命令
             if (current_time - last_servo_time) >= 2.0:  # 2000毫秒
                 # 舵机控制：设置角度并读取
@@ -80,13 +85,13 @@ def main():
                 # servo.read_angle(servo_id)
                 # time.sleep(0.01)
                 last_servo_time = current_time
-                
+
                 # 切换目标位置（可选）
                 angle_value = 150 if angle_value == 0 else 0
 
             # 添加短暂延迟避免CPU过载
             time.sleep(0.0001)
-            
+
     except KeyboardInterrupt:
         logging.info("Program terminated by user")
         control.disable()
