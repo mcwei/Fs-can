@@ -15,7 +15,8 @@
 - [注意事项](#注意事项)
 
 ## 环境要求
-### 基础依赖
+**基础依赖**
+
 1. Python版本：推荐3.7及以上
 2. 必装Python库：
    ```bash
@@ -27,7 +28,8 @@
    - 安装CAN总线适配器驱动（如PCAN-USB、CANalyst-II）
    - 确保达妙电机、FashionStar舵机均接入同一CAN总线，且终端电阻配置正确
 
-### 硬件兼容
+**硬件兼容**
+
 - CAN适配器：PCAN-USB（推荐）、CANalyst-II
 - 达妙电机：支持DM4310等系列（需匹配对应Motor_Type）
 - FashionStar舵机：全系列CAN总线舵机
@@ -126,7 +128,7 @@ dm_control.control_Pos_Vel(motor, position, max_velocity)
 #### 其他常用控制（参考达妙电机SDK）
 - 禁用电机：`dm_control.disable(motor)`
 - 批量禁用电机：`dm_control.disableAll()`
-- 读取电机状态：`dm_control.read_motor_status(motor)`（需根据达妙SDK补充）
+- 读取电机状态：`dm_control.read_motor_status(motor)`
 
 ### FashionStar舵机控制
 #### 基础角度控制
@@ -285,7 +287,7 @@ if __name__ == "__main__":
    - 若使用CANalyst-II，需确认适配器波特率与设备一致。
 
 2. **设备ID冲突**：
-   - 达妙电机与FashionStar舵机的CAN ID需错开（如电机用0x10~0x1F，舵机用0x00~0x0F），避免指令冲突。
+   - 达妙电机与FashionStar舵机的CAN ID需错开（如电机用0x10 - 0x1F，舵机用0x00 - 0x0F），避免指令冲突。
 
 3. **时序控制**：
    - 电机/舵机控制指令发送间隔建议≥1ms，避免CAN总线拥塞。
